@@ -1,0 +1,20 @@
+# Trade sources. RSS first; anything without a working feed gets `html:` fallback later.
+# Verify URLs with:  python -m sabio_intel check-sources
+# weight: 1.0 = neutral. Raise for sources whose readers match Sabio's buyers.
+sources:
+  - {name: AdExchanger,        url: "https://www.adexchanger.com/feed/",            weight: 1.3, tags: [programmatic, measurement, identity]}
+  - {name: Digiday,            url: "https://digiday.com/feed/",                    weight: 1.2, tags: [media, publishers, agencies]}
+  - {name: Adweek,             url: "https://www.adweek.com/feed/",                 weight: 1.1, tags: [brands, agencies, creative]}
+  - {name: Ad Age,             url: "https://adage.com/rss.xml",                    weight: 1.1, tags: [brands, agencies]}
+  - {name: Marketing Brew,     url: "https://www.marketingbrew.com/feed",           weight: 1.0, tags: [brands, trends]}
+  - {name: MediaPost,          url: "https://www.mediapost.com/publications/rss/",  weight: 1.0, tags: [media, agencies]}
+  - {name: The Drum,           url: "https://www.thedrum.com/rss",                  weight: 0.9, tags: [creative, global]}
+  - {name: Campaign US,        url: "https://www.campaignlive.com/rss/",            weight: 0.8, tags: [agencies, global]}
+  - {name: Search Engine Land, url: "https://searchengineland.com/feed",            weight: 0.8, tags: [search, ai-search]}
+  - {name: TechCrunch Apps,    url: "https://techcrunch.com/category/apps/feed/",   weight: 1.2, tags: [apps, mobile]}
+  - {name: Mobile Dev Memo,    url: "https://mobiledevmemo.com/feed/",              weight: 1.2, tags: [apps, mobile, measurement]}
+  - {name: Adweek Video/CTV,   url: "https://www.adweek.com/category/tv-video/feed/", weight: 1.0, tags: [ctv, video]}
+  - {name: Broadcasting+Cable (TVNewsCheck), url: "https://tvnewscheck.com/feed/",   weight: 0.8, tags: [ctv, video]}
+  - {name: Podnews,            url: "https://podnews.net/rss",                      weight: 0.7, tags: [audio, podcast]}
+  - {name: Axios Media Trends, url: "https://www.axios.com/feeds/feed.rss",         weight: 0.9, tags: [media, business]}
+  - {name: Search Engine Journal, url: "https://www.searchenginejournal.com/feed/", weight: 0.6, tags: [search]}

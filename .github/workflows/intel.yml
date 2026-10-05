@@ -1,0 +1,29 @@
+name: market-intel
+on:
+  schedule:
+    - cron: "0 11 * * 1-5"   # 7am ET weekdays (UTC; shifts an hour with DST)
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11", cache: pip}
+      - run: pip install -r requirements.txt
+      # SQLite memory (dedupe + theme history) persists between runs via cache
+      - uses: actions/cache@v4
+        with:
+          path: data
+          key: intel-db-${{ github.run_id }}
+          restore-keys: intel-db-
+      - run: python -m sabio_intel run --all
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MI_TRANSPORT: smtp
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      - uses: actions/upload-artifact@v4
+        with: {name: intel-output, path: output/}

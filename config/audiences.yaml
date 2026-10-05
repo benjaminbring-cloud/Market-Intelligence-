@@ -1,0 +1,41 @@
+# Who gets what. Add a team = add a block. Same pipeline, different lens + delivery.
+# `lens` is injected into the scoring prompt so each team sees the same news through its own job.
+delivery:
+  from_name: "Sabio Market Intel"
+  # transport: smtp | gmail | stdout  (set in env: MI_TRANSPORT)
+profiles:
+  ben:
+    name: Ben Bring
+    email: bbring@sabio.inc          # CONFIRM address
+    cadence: daily                   # daily | weekly
+    top_n: 7
+    lens: >
+      Ben leads client strategy. Surface what changes how we pitch, what we can
+      activate on this week, and what belongs in the weekly client strategy decks.
+    sections: [headline, activations, deck_slides, narrative_of_the_week, watchlist]
+  # --- company rollout: uncomment / copy as needed ---
+  # sales:
+  #   name: Sales team
+  #   email: sales@sabio.inc
+  #   cadence: weekly
+  #   top_n: 5
+  #   lens: Sales reps want conversation openers for agency and brand prospects and proof that signal-loss is real.
+  #   sections: [headline, activations, narrative_of_the_week]
+  # planning:
+  #   name: Strategy & Planning
+  #   email: planning@sabio.inc
+  #   cadence: weekly
+  #   top_n: 8
+  #   lens: Planners want audience ideas, category trends, and persona hooks they can build a plan around.
+  #   sections: [headline, activations, deck_slides, watchlist]
+  # exec:
+  #   name: Leadership
+  #   email: leadership@sabio.inc
+  #   cadence: weekly
+  #   top_n: 4
+  #   lens: Executives want competitive moves, market-structure shifts and anything affecting revenue or positioning.
+  #   sections: [headline, watchlist]
+# Active clients make "client-specific" alerts possible: if a story touches one, it's flagged.
+clients:
+  # Add client names and categories as you go. Example:
+  # - {name: eBay, category: marketplace, keywords: [ebay, resale, marketplace]}

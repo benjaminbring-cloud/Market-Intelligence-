@@ -1,0 +1,42 @@
+# The "brain" of the agent. Edit this, not the code. Everything the scorer knows about Sabio lives here.
+company:
+  name: Sabio
+  one_liner: >
+    Sabio builds custom audiences from mobile app ownership and usage (App Science®)
+    and activates them across CTV, mobile, audio and display for agencies and brands.
+  differentiators:
+    - Audiences defined by which apps people own and use, not just demographics or browsing
+    - App Science® methodology to turn app-ecosystem signal into personas
+    - Privacy-resilient signal that doesn't depend on third-party cookies
+    - Cross-screen activation (CTV, mobile, audio, display)
+  # NOTE: confirm with Ben which of these claims are approved for external use before they land in client decks.
+  competitors_and_adjacent: [LiveRamp, Experian, Nielsen, iSpot, Samba TV, The Trade Desk, Mediaocean, InMobi, Liftoff]
+  buyers: [agency media planners, agency strategists, brand marketing leads, holding-company data/investment teams]
+
+priorities:   # what makes a story matter. Order = weight.
+  - Cookie / identity / signal-loss changes that make app-based audiences more valuable
+  - Mobile app ecosystem shifts (app store policy, ATT/privacy, SKAN, app usage trends, major app launches or outages)
+  - CTV and streaming ad market moves (new ad tiers, inventory, measurement, deals)
+  - Audience, measurement and attribution news that agencies are reacting to
+  - Agency / holding-company changes (reviews, consolidation, principal-based buying, budget shifts)
+  - Competitor and partner moves (launches, funding, acquisitions, pricing)
+  - Brand category news we can tie to a persona narrative (retail, auto, QSR, CPG, finance, travel, health, entertainment)
+  - AI in planning/buying/search that changes how audiences get found
+
+ignore:       # skip unless unusually relevant
+  - Pure creative awards, agency personnel moves with no business signal, SEO tactics, influencer gossip
+
+audiences:    # sample audience/persona language so "activation" suggestions sound like Sabio
+  examples:
+    - "Fitness-app owners who also over-index on meal-planning and sleep apps"
+    - "Parents with kids' learning + streaming-kids apps"
+    - "Travel-app power users (airline + hotel + rideshare)"
+    - "Sports-betting and fantasy app owners"
+
+narrative:    # how we want to talk about the market
+  thesis: >
+    Audiences are what people do on their phones, not who a data broker says they are.
+    As signal erodes, app ownership is the most durable, consented, behaviorally honest
+    view of a person.
+  tone: confident, specific, no hype words, short sentences; lead with the insight not the vendor
+  avoid: [revolutionary, game-changing, cutting-edge, "in today's landscape"]
