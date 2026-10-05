@@ -19,7 +19,7 @@ def _story(s: dict, n: int) -> str:
 </div>"""
 
 
-def email_html(profile: dict, stories: list[dict], synth: dict, run_date: str, status: dict) -> str:
+def email_html(profile: dict, stories: list[dict], synth: dict, run_date: str, status: dict, radar: list[dict] | None = None) -> str:
     secs = profile.get("sections", [])
     parts = [f'<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;max-width:680px;margin:auto;color:#111">',
              f'<h2 style="margin:0">Sabio Market Intel</h2><div style="color:#6b7280;font-size:13px;margin-bottom:18px">{e(run_date)} · for {e(profile["name"])}</div>']
@@ -33,6 +33,12 @@ def email_html(profile: dict, stories: list[dict], synth: dict, run_date: str, s
     if "headline" in secs:
         parts.append('<h3 style="margin:0 0 12px">What matters</h3>')
         parts += [_story(s, i + 1) for i, s in enumerate(stories)]
+    if radar and "headline" in secs:
+        parts.append(f'<h3 style="margin:8px 0 10px">Also on the radar ({len(radar)})</h3><ul style="font-size:14px;line-height:1.5;padding-left:18px">')
+        for r in radar:
+            c = f' <span style="color:#92400e">[{e(r["client"])}]</span>' if r.get("client") else ""
+            parts.append(f'<li style="margin-bottom:8px"><a href="{e(r["url"])}" style="color:#111;font-weight:600;text-decoration:none">{e(r.get("headline", r["title"]))}</a>{c} <span style="color:#6b7280">({e(r["source"])})</span><br>{e(r.get("why_it_matters",""))}</li>')
+        parts.append("</ul>")
     if "deck_slides" in secs:
         parts.append('<h3>Deck-ready (also saved as a slide pack)</h3><ul style="font-size:14px">')
         for s in stories[:4]:

@@ -8,8 +8,10 @@ class FakeLLM:
     def json(self, system, user, max_tokens=0):
         if system.startswith("You are the market-intelligence triage"):
             n = user.count("\n") + 1
-            return [{"i": i, "relevance": 9 if i == 0 else 1, "category": "identity",
+            return [{"i": i, "relevance": 9 if i == 0 else (6 if i == 1 else 1), "category": "identity",
                      "client": "eBay" if i == 0 else None} for i in range(n)]
+        if "don't need a full write-up" in system:
+            return [{"i": i, "headline": f"brief {i}", "why_it_matters": "one line"} for i in range(user.count("\n") + 1)]
         if "senior strategist" in system:
             return [{"i": 0, "headline": "Cookies die again", "why_it_matters": "Signal loss.",
                      "activation": "Build a resale-app audience.",
@@ -35,7 +37,7 @@ def test_end_to_end(tmp_path, monkeypatch):
     monkeypatch.setattr("sabio_intel.deliver.OUTPUT_DIR", tmp_path)
     res = pipeline.run("ben", FakeLLM(), articles=arts())
     assert res["stories"][0]["client"] == "eBay"
-    assert len(res["stories"]) == 1           # low-relevance story filtered
+    assert len(res["stories"]) == 2           # both clear the bar; low-relevance ones would be dropped
     assert "Activate" in next(tmp_path.glob("*_ben.html")).read_text()
     slides = json.loads(next(tmp_path.glob("*_slides.json")).read_text())
     assert slides["slides"][0]["title"] == "Signal loss is permanent"
@@ -47,3 +49,21 @@ def test_end_to_end(tmp_path, monkeypatch):
 def test_parse_json_handles_fences():
     assert llm_mod.parse_json('```json\n[{"a":1}]\n```') == [{"a": 1}]
     assert llm_mod.parse_json('Here: {"a":1}') == {"a": 1}
+
+
+def test_overflow_goes_to_radar(tmp_path, monkeypatch):
+    monkeypatch.setattr("sabio_intel.store.DATA_DIR", tmp_path)
+    monkeypatch.setattr("sabio_intel.pipeline.OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr("sabio_intel.deliver.OUTPUT_DIR", tmp_path)
+    real = pipeline.load
+
+    def patched(name):
+        d = real(name)
+        if name == "audiences":
+            d["profiles"]["ben"]["top_n"] = 1
+        return d
+    monkeypatch.setattr(pipeline, "load", patched)
+    res = pipeline.run("ben", FakeLLM(), articles=arts())
+    assert len(res["stories"]) == 1               # full write-up
+    html = next(tmp_path.glob("*_ben.html")).read_text()
+    assert "Also on the radar (1)" in html        # the second story is summarized, not dropped

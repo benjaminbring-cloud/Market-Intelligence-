@@ -100,3 +100,20 @@ def synthesize(llm, brief: str, lens: str, stories: list[dict], past_themes: lis
                         for i, s in enumerate(stories))
     user = listing + "\n\nPRIOR THEMES (last 6 weeks): " + (json.dumps(past_themes) if past_themes else "none yet")
     return llm.json(SYNTH_SYS + brief + f"\n\nREADER LENS: {lens.strip()}", user, max_tokens=3500)
+
+
+BRIEF_SYS = """You are a senior strategist at the company below. These stories matter but don't need a full write-up.
+For EACH, return ONLY JSON: [{"i": <index>, "headline": "<plain English, <=14 words>", "why_it_matters": "<ONE sentence: the so-what for us and our buyers>"}]
+Only use facts in the supplied text.
+
+"""
+
+
+def brief_pass(llm, brief: str, lens: str, rest: list[dict]) -> list[dict]:
+    out = []
+    for k in range(0, len(rest), BATCH):
+        chunk = rest[k:k + BATCH]
+        listing = "\n".join(f"[{i}] ({a['source']}) {a['title']} — {a['summary'][:400]}" for i, a in enumerate(chunk))
+        by_i = {r["i"]: r for r in llm.json(BRIEF_SYS + brief + f"\n\nREADER LENS: {lens.strip()}", listing, max_tokens=3000)}
+        out += [{**a, **{k2: v for k2, v in by_i.get(i, {}).items() if k2 != "i"}} for i, a in enumerate(chunk)]
+    return out

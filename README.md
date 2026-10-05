@@ -12,7 +12,7 @@ Reads the major ad/marketing trades every morning, decides what matters *to Sabi
 5. **Synthesize**: the narrative of the week (argument, proof points, talk track, LinkedIn draft), theme momentum vs. prior weeks, a watchlist, and a "what the trades are missing" contrarian take.
 6. **Deliver**: HTML email + `output/<date>_<profile>_slides.md|json`.
 
-Stories touching an active client (`config/audiences.yaml → clients`) always make the cut and are flagged.
+Every story above the relevance bar is included: the top few get the full write-up, the rest appear under "Also on the radar" with a one-line why-it-matters. Stories touching an active client (`config/audiences.yaml → clients`) always make the cut and are flagged.
 
 ## Run it
 ```bash

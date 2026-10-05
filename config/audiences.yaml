@@ -8,7 +8,8 @@ profiles:
     name: Ben Bring
     email: bbring@sabio.inc          # CONFIRM address
     cadence: daily                   # daily | weekly
-    top_n: 7
+    top_n: 7        # how many get the full write-up; everything else above the bar gets a one-line summary
+    # max_stories: 40  # optional runaway-cost ceiling (default 40)
     lens: >
       Ben leads client strategy. Surface what changes how we pitch, what we can
       activate on this week, and what belongs in the weekly client strategy decks.
